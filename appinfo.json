@@ -1,0 +1,19 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "ryanbatch@gmail.com",
+    "longName": "WunderFace",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "shortName": "WunderFace",
+    "uuid": "6c5a6b59-2a7d-4587-9ab9-c84ebf8c7a7f",
+    "versionCode": 1,
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
