@@ -14,13 +14,13 @@
             {
                 "characterRegex": "[0-9:\u00b0]",
                 "file": "fonts/Ubuntu-R.ttf",
-                "name": "FONT_UBUNTU_REG_34",
+                "name": "FONT_UBUNTU_REG_42",
                 "type": "font"
             },
             {
                 "characterRegex": "[A-Za-z0-9.\\- ]",
                 "file": "fonts/Ubuntu-R.ttf",
-                "name": "FONT_UBUNTU_REG_20",
+                "name": "FONT_UBUNTU_REG_28",
                 "type": "font"
             }
         ]

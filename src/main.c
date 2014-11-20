@@ -29,7 +29,13 @@ static void update_time()
     else
     {
         // Use 12 hour format
-        strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
+        clock_copy_time_string(buffer, sizeof("00:00"));
+        //Strip meridan, because I don't care
+        if (buffer[0] != '1')
+        {
+            strcpy(&buffer[4], "");
+        }
+        
     }
     
     // Display this time on the TextLayer
@@ -38,8 +44,8 @@ static void update_time()
 
 static void main_window_load(Window *window) {
     // Create time TextLayer
-    s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_UBUNTU_REG_34));
-    s_text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_UBUNTU_REG_20));
+    s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_UBUNTU_REG_42));
+    s_text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_UBUNTU_REG_28));
     
     s_time_layer = text_layer_create(GRect(0, 114, 144, 50));
     text_layer_set_background_color(s_time_layer, GColorBlack);
@@ -49,7 +55,7 @@ static void main_window_load(Window *window) {
     text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
     
     // Create weather TextLayer
-    s_weather_layer = text_layer_create(GRect(0, 10, 144, 40));
+    s_weather_layer = text_layer_create(GRect(0, 10, 144, 100));
     text_layer_set_background_color(s_weather_layer, GColorBlack);
     text_layer_set_text_color(s_weather_layer, GColorWhite);
     text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
@@ -106,7 +112,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         t = dict_read_next(iterator);
     }
     
-    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s - %s", temperature_buffer, conditions_buffer);
+    snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s\n%s", temperature_buffer, conditions_buffer);
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
 }
 
