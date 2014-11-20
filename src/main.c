@@ -2,6 +2,7 @@
 #include <pebble.h>
 static Window *s_main_window;
 static TextLayer *s_time_layer;
+static TextLayer *s_weather_layer;
 
 static void update_time()
 {
@@ -27,14 +28,16 @@ static void update_time()
 
 static void main_window_load(Window *window) {
   // Create time TextLayer
-  s_time_layer = text_layer_create(GRect(0, 5, 144, 50));
-  text_layer_set_background_color(s_time_layer, GColorClear);
-  text_layer_set_text_color(s_time_layer, GColorBlack);
+  s_time_layer = text_layer_create(GRect(0, 114, 144, 50));
+  text_layer_set_background_color(s_time_layer, GColorBlack);
+  text_layer_set_text_color(s_time_layer, GColorWhite);
   text_layer_set_text(s_time_layer, "00:00");
 
   // Improve the layout to be more like a watchface
   text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_34_MEDIUM_NUMBERS));
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+  
+  window_set_background_color(s_main_window, GColorBlack);
 
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
