@@ -72,7 +72,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
     update_time();
 }
 
-static void inbox_recieved_callback(DictionaryIterator *iterator, void *context)
+static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 {
     
 }
