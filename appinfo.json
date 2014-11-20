@@ -1,5 +1,8 @@
 {
-    "appKeys": {},
+    "appKeys": {
+        "KEY_CONDITIONS": 1,
+        "KEY_TEMPERATURE": 0
+    },
     "capabilities": [
         "location"
     ],
@@ -9,15 +12,15 @@
     "resources": {
         "media": [
             {
-                "characterRegex": "[A-Za-z0-9.]",
-                "file": "fonts/Ubuntu-R.ttf",
-                "name": "FONT_UBUNTU_REG_20",
-                "type": "font"
-            },
-            {
                 "characterRegex": "[0-9:\u00b0]",
                 "file": "fonts/Ubuntu-R.ttf",
                 "name": "FONT_UBUNTU_REG_34",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[A-Za-z0-9.]",
+                "file": "fonts/Ubuntu-R.ttf",
+                "name": "FONT_UBUNTU_REG_20",
                 "type": "font"
             }
         ]
