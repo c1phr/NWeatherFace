@@ -1,20 +1,26 @@
 {
     "appKeys": {},
     "capabilities": [
-        ""
-    ],
+                     ""
+                     ],
     "companyName": "ryanbatch@gmail.com",
     "longName": "Wunder Watch",
     "projectType": "native",
     "resources": {
         "media": [
-            {
-                "characterRegex": "[0-9\\:\\.\\x{00B0}\\C\\F]",
-                "file": "fonts/Ubuntu-L.ttf",
-                "name": "FONT_UBUNTU_LIGHT_34",
-                "type": "font"
-            }
-        ]
+                  {
+                  "characterRegex": "[0-9:°]",
+                  "file": "fonts/Ubuntu-R.ttf",
+                  "name": "FONT_UBUNTU_REG_34",
+                  "type": "font"
+                  },
+                  {
+                  "characterRegex": "[A-Za-z0-9.]",
+                  "file": "fonts/Ubuntu-R.ttf",
+                  "name": "FONT_UBUNTU_REG_20",
+                  "type": "font"
+                  }
+                  ]
     },
     "shortName": "WunderFace",
     "uuid": "6c5a6b59-2a7d-4587-9ab9-c84ebf8c7a7f",
