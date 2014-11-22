@@ -3,13 +3,18 @@
 #define KEY_TEMPERATURE 0
 #define KEY_CONDITIONS 1
 static Window *s_main_window;
+
 static GFont s_time_font;
 static GFont s_text_font;
+
 static TextLayer *s_time_layer;
 static TextLayer *s_weather_layer;
+
 static char temperature_buffer[8];
 static char conditions_buffer[32];
 static char weather_layer_buffer[32];
+
+static Layer *line_layer;
 
 static void update_time()
 {
@@ -31,7 +36,7 @@ static void update_time()
         // Use 12 hour format
         clock_copy_time_string(buffer, sizeof("00:00"));
         //Strip meridan, because I don't care
-        if (buffer[0] != '1')
+        if (buffer[2] != ':')
         {
             strcpy(&buffer[4], "");
         }
@@ -48,7 +53,7 @@ static void main_window_load(Window *window) {
     s_text_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_UBUNTU_REG_28));
     
     s_time_layer = text_layer_create(GRect(0, 114, 144, 50));
-    text_layer_set_background_color(s_time_layer, GColorBlack);
+    text_layer_set_background_color(s_time_layer, GColorClear);
     text_layer_set_text_color(s_time_layer, GColorWhite);
     text_layer_set_text(s_time_layer, "00:00");
     text_layer_set_font(s_time_layer, s_time_font);
@@ -56,7 +61,7 @@ static void main_window_load(Window *window) {
     
     // Create weather TextLayer
     s_weather_layer = text_layer_create(GRect(0, 10, 144, 100));
-    text_layer_set_background_color(s_weather_layer, GColorBlack);
+    text_layer_set_background_color(s_weather_layer, GColorClear);
     text_layer_set_text_color(s_weather_layer, GColorWhite);
     text_layer_set_text_alignment(s_weather_layer, GTextAlignmentCenter);
     text_layer_set_text(s_weather_layer, "Loading...");
@@ -80,7 +85,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 {
     update_time();
     
-    if (tick_time->tm_min % 30 == 0)
+    if (tick_time->tm_min % 60 == 0)
     {
         DictionaryIterator *iter;
         app_message_outbox_begin(&iter);
@@ -127,6 +132,14 @@ static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResul
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
     APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
+                       
+static void draw_horz_line(Layer *this_layer, GContext *ctx)
+{
+    GPoint p1 = GPoint(0, 100);
+    GPoint p2 = GPoint(144, 100);
+    graphics_context_set_stroke_color(ctx, GColorWhite);
+    graphics_draw_line(ctx, p1, p2);
+}
 
 static void init()
 {
@@ -138,6 +151,10 @@ static void init()
         .load = main_window_load,
         .unload = main_window_unload
     });
+    
+    line_layer = layer_create(GRect(0, 0, 144, 168));
+    
+    layer_set_update_proc(line_layer, draw_horz_line);
     
     // Show the Window on the watch, with animated=true
     window_stack_push(s_main_window, true);
