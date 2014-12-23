@@ -18,14 +18,21 @@ function locationSuccess(pos) {
             var json = JSON.parse(responseText);
 
             var temperature = Math.round(json.currentobservation.Temp);
-            console.log("Temperature is " + temperature);
 
             // Conditions
             var conditions = json.currentobservation.Weather;
-            console.log("Conditions are " + conditions);
                
             //High/low
-           var high_low_temp = json.data.temperature[0] + "°/" + json.data.temperature[1] + "°";
+               var high_low_temp;
+            if (json.time.tempLabel[0] == "Low")
+               {
+                    high_low_temp = json.data.temperature[1] + "°/" + json.data.temperature[0] + "°";
+               }
+            else
+               {
+                    high_low_temp = json.data.temperature[0] + "°/" + json.data.temperature[1] + "°";
+               }
+           
             
            var dictionary = {
                 "KEY_TEMPERATURE": temperature,

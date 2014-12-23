@@ -19,13 +19,7 @@
                 "type": "font"
             },
             {
-                "characterRegex": "[A-Za-z0-9.\\-/° ]",
-                "file": "fonts/Ubuntu-R.ttf",
-                "name": "FONT_UBUNTU_REG_28",
-                "type": "font"
-            },
-            {
-                "characterRegex": "[A-Za-z0-9.\\-/° ]",
+                "characterRegex": "[A-Za-z0-9.\\-/° |]",
                 "file": "fonts/Ubuntu-R.ttf",
                 "name": "FONT_UBUNTU_REG_20",
                 "type": "font"
