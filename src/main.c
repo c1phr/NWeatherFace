@@ -10,11 +10,11 @@ static GFont s_text_font;
 static GFont s_high_low_font;
 
 static TextLayer *s_time_layer;
+static TextLayer *s_date_layer;
 static TextLayer *s_weather_layer;
 static TextLayer *s_high_low_layer;
 
 static char temperature_buffer[8];
-static char conditions_buffer[32];
 static char high_low_buffer[32];
 static char weather_layer_buffer[32];
 static char high_low_layer_buffer[32];
@@ -47,7 +47,10 @@ static void update_time()
         }
         
     }
-    
+    static char date_buf[80];
+    strftime(date_buf, 80, "%a %b %d", tick_time);
+
+    text_layer_set_text(s_date_layer, date_buf);
     // Display this time on the TextLayer
     text_layer_set_text(s_time_layer, buffer);
 }
@@ -64,6 +67,14 @@ static void main_window_load(Window *window) {
     text_layer_set_text(s_time_layer, "00:00");
     text_layer_set_font(s_time_layer, s_time_font);
     text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+    
+    // Create date TextLayer
+    s_date_layer = text_layer_create(GRect(0, 95, 144, 50));
+    text_layer_set_background_color(s_date_layer, GColorClear);
+    text_layer_set_text_color(s_date_layer, GColorWhite);
+    text_layer_set_text(s_date_layer, "");
+    text_layer_set_font(s_date_layer, s_high_low_font);
+    text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
     
     // Create weather TextLayer
     s_weather_layer = text_layer_create(GRect(0, 5, 144, 40));
@@ -86,6 +97,7 @@ static void main_window_load(Window *window) {
     
     // Add children to the main window layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
+    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_high_low_layer));
 }
