@@ -36,7 +36,6 @@ function locationSuccess(pos) {
             
            var dictionary = {
                 "KEY_TEMPERATURE": temperature,
-                "KEY_CONDITIONS": conditions,
                 "KEY_HIGH_LOW": high_low_temp,
            };
            

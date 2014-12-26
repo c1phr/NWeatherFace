@@ -1,8 +1,7 @@
 #include <pebble.h>
 #include <pebble.h>
 #define KEY_TEMPERATURE 0
-#define KEY_CONDITIONS 1
-#define KEY_HIGH_LOW 2
+#define KEY_HIGH_LOW 1
 static Window *s_main_window;
 
 static GFont s_time_font;
@@ -118,12 +117,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
                 snprintf(temperature_buffer, sizeof(temperature_buffer), "%d°", (int)t->value->int32);
                 break;
                 
-            case KEY_CONDITIONS:
-                //snprintf(conditions_buffer, sizeof(conditions_buffer), "%s", t->value->cstring);
-                break;
-                
             case KEY_HIGH_LOW:
                 snprintf(high_low_buffer, sizeof(high_low_buffer), "%s", t->value->cstring);
+                break;
                 
             default:
                 APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);

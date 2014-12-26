@@ -1,32 +1,32 @@
 {
     "appKeys": {
-        "KEY_HIGH_LOW": 2,
         "KEY_CONDITIONS": 1,
+        "KEY_HIGH_LOW": 2,
         "KEY_TEMPERATURE": 0
     },
     "capabilities": [
         "location"
     ],
     "companyName": "ryanbatch@gmail.com",
-    "longName": "Wunder Watch",
+    "longName": "NWeather Face",
     "projectType": "native",
     "resources": {
         "media": [
+            {
+                "characterRegex": "[A-Za-z0-9.\\-/\u00b0 |]",
+                "file": "fonts/Ubuntu-R.ttf",
+                "name": "FONT_UBUNTU_REG_20",
+                "type": "font"
+            },
             {
                 "characterRegex": "[0-9:\u00b0]",
                 "file": "fonts/Ubuntu-R.ttf",
                 "name": "FONT_UBUNTU_REG_42",
                 "type": "font"
-            },
-            {
-                "characterRegex": "[A-Za-z0-9.\\-/° |]",
-                "file": "fonts/Ubuntu-R.ttf",
-                "name": "FONT_UBUNTU_REG_20",
-                "type": "font"
             }
         ]
     },
-    "shortName": "WunderFace",
+    "shortName": "NWeather Face",
     "uuid": "6c5a6b59-2a7d-4587-9ab9-c84ebf8c7a7f",
     "versionCode": 1,
     "versionLabel": "1.0",
