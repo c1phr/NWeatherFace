@@ -21,6 +21,34 @@ function locationSuccess(pos) {
 
             // Conditions
             var conditions = json.currentobservation.Weather;
+            var conditionCode;
+            if (conditions.indexOf("Sunny") > -1) {
+                conditionCode = "sun";
+            }
+            else if (conditions.indexOf("Clear") > -1) {
+                conditionCode = "clear";
+            }
+            else if ((conditions.indexOf("Rain\/Snow") > -1) || (conditions.indexOf("Wintry") > -1) || (conditions.indexOf("Sleet") > -1)) { //Is WintryMix possible?
+                conditionCode = "mix";
+            }
+            else if (conditions.indexOf("Cloudy") > -1) {
+                conditionCode = "cloud";
+            }
+            else if (conditions.indexOf("Rain") > -1) {
+                conditionCode = "rain";
+            }
+            else if ((conditions.indexOf("Thunderstorms") > -1) || (conditions.indexOf("Sleet") > -1)) {
+                conditionCode = "thunderstorm";
+            }
+            else if ((conditions.indexOf("Breezy") > -1) || (conditions.indexOf("Wind") > -1)) {
+                conditionCode = "wind";
+            }
+            else if (conditions.indexOf("Snow") > -1) {
+                conditionCode = "snow";
+            }
+            else {
+                conditionCode = "clear";
+            }
                
             //High/low
                var high_low_temp;
@@ -35,8 +63,9 @@ function locationSuccess(pos) {
            
             
            var dictionary = {
-                "KEY_TEMPERATURE": temperature,
-                "KEY_HIGH_LOW": high_low_temp,
+               "KEY_TEMPERATURE": temperature,
+               "KEY_HIGH_LOW": high_low_temp,
+               "KEY_CONDITION": conditionCode,
            };
            
             Pebble.sendAppMessage(dictionary,
@@ -71,7 +100,6 @@ Pebble.addEventListener('ready',
 
 Pebble.addEventListener('appmessage',
     function(e) {
-        console.log("AppMessage received!");
         getWeather();
     }
 );

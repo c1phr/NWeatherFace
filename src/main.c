@@ -1,7 +1,7 @@
 #include <pebble.h>
-#include <pebble.h>
 #define KEY_TEMPERATURE 0
 #define KEY_HIGH_LOW 1
+#define KEY_CONDITION 2
 static Window *s_main_window;
 
 static GFont s_time_font;
@@ -14,8 +14,7 @@ static TextLayer *s_weather_layer;
 static char temperature_buffer[8];
 static char high_low_buffer[32];
 static char weather_layer_buffer[32];
-
-static Layer *line_layer;
+static char condition_buffer[32];
 
 static void update_time()
 {
@@ -51,6 +50,75 @@ static void update_time()
     text_layer_set_text(s_time_layer, buffer);
 }
 
+static void set_text_colors(int color)
+{
+    if (color == 1)
+    {
+        text_layer_set_text_color(s_date_layer, GColorWhite);
+        text_layer_set_text_color(s_time_layer, GColorWhite);
+        text_layer_set_text_color(s_weather_layer, GColorWhite);
+    }
+    else
+    {
+        text_layer_set_text_color(s_date_layer, GColorBlack);
+        text_layer_set_text_color(s_time_layer, GColorBlack);
+        text_layer_set_text_color(s_weather_layer, GColorBlack);
+    }
+}
+
+static void set_condition_color(char* condition)
+{
+    #ifdef PBL_COLOR
+        if (strcmp(condition, "sun") == 0)
+        {
+            window_set_background_color(s_main_window, GColorYellow);
+            set_text_colors(0);
+        }
+        else if (strcmp(condition, "clear") == 0)
+        {
+            window_set_background_color(s_main_window, GColorCeleste);
+            set_text_colors(0);
+        }
+        else if (strcmp(condition, "mix") == 0)
+        {
+            window_set_background_color(s_main_window, GColorCyan);
+            set_text_colors(0);
+        }
+        else if (strcmp(condition, "cloud") == 0)
+        {
+            window_set_background_color(s_main_window, GColorCobaltBlue);
+            set_text_colors(1);
+        }
+        else if (strcmp(condition, "rain") == 0)
+        {
+            window_set_background_color(s_main_window, GColorBlue);
+            set_text_colors(0);
+        }
+        else if (strcmp(condition, "thunderstorm") == 0)
+        {
+            window_set_background_color(s_main_window, GColorLightGray);
+            set_text_colors(0);
+        }
+        else if (strcmp(condition, "wind") == 0)
+        {
+            window_set_background_color(s_main_window, GColorPictonBlue);
+            set_text_colors(1);
+        }
+        else if (strcmp(condition, "snow") == 0)
+        {
+            window_set_background_color(s_main_window, GColorWhite);
+            set_text_colors(0);
+        }
+        else
+        {
+            window_set_background_color(s_main_window, GColorDarkCandyAppleRed);
+            set_text_colors(1);
+        }
+    #else
+        window_set_background_color(s_main_window, GColorBlack);
+    #endif
+}
+
 static void main_window_load(Window *window) {
     // Create time TextLayer
     s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_UBUNTU_REG_42));
@@ -79,7 +147,11 @@ static void main_window_load(Window *window) {
     text_layer_set_text(s_weather_layer, "");
     text_layer_set_font(s_weather_layer, s_text_font);
     
-    window_set_background_color(s_main_window, GColorBlack);
+    #ifdef PBL_COLOR
+        window_set_background_color(s_main_window, GColorDarkGray);
+    #else
+        window_set_background_color(s_main_window, GColorBlack);
+    #endif
     
     // Add children to the main window layer
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
@@ -120,6 +192,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
             case KEY_HIGH_LOW:
                 snprintf(high_low_buffer, sizeof(high_low_buffer), "%s", t->value->cstring);
                 break;
+            
+            case KEY_CONDITION:
+                snprintf(condition_buffer, sizeof(condition_buffer), "%s", t->value->cstring);
+                set_condition_color(condition_buffer);
+                break;
                 
             default:
                 APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
@@ -144,14 +221,6 @@ static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResul
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
     APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
-                       
-static void draw_horz_line(Layer *this_layer, GContext *ctx)
-{
-    GPoint p1 = GPoint(0, 100);
-    GPoint p2 = GPoint(144, 100);
-    graphics_context_set_stroke_color(ctx, GColorWhite);
-    graphics_draw_line(ctx, p1, p2);
-}
 
 static void init()
 {
@@ -163,9 +232,6 @@ static void init()
         .load = main_window_load,
         .unload = main_window_unload
     });
-    line_layer = layer_create(GRect(0, 0, 144, 168));
-    
-    layer_set_update_proc(line_layer, draw_horz_line);
     
     // Show the Window on the watch, with animated=true
     window_stack_push(s_main_window, true);

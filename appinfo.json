@@ -1,5 +1,6 @@
 {
     "appKeys": {
+        "KEY_CONDITION": 2,
         "KEY_HIGH_LOW": 1,
         "KEY_TEMPERATURE": 0
     },
@@ -25,11 +26,15 @@
             }
         ]
     },
-    "sdkVersion": "2",
+    "sdkVersion": "3",
     "shortName": "NWeather Face",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
     "uuid": "6c5a6b59-2a7d-4587-9ab9-c84ebf8c7a7f",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.1",
     "watchapp": {
         "watchface": true
     }
