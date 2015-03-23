@@ -148,7 +148,7 @@ static void main_window_load(Window *window) {
     text_layer_set_font(s_weather_layer, s_text_font);
     
     #ifdef PBL_COLOR
-        window_set_background_color(s_main_window, GColorDarkGray);
+        window_set_background_color(s_main_window, GColorDarkCandyAppleRed);
     #else
         window_set_background_color(s_main_window, GColorBlack);
     #endif
