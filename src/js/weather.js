@@ -51,22 +51,64 @@ function locationSuccess(pos) {
             }
                
             //High/low
-               var high_low_temp;
+            var high_low_temp;
             if (json.time.tempLabel[0] == "Low")
-               {
-                    high_low_temp = json.data.temperature[1] + "°/" + json.data.temperature[0] + "°";
-               }
+            {
+                high_low_temp = json.data.temperature[1] + "°/" + json.data.temperature[0] + "°";
+            }
             else
-               {
-                    high_low_temp = json.data.temperature[0] + "°/" + json.data.temperature[1] + "°";
-               }
-           
+            {
+                high_low_temp = json.data.temperature[0] + "°/" + json.data.temperature[1] + "°";
+            }
             
-           var dictionary = {
-               "KEY_TEMPERATURE": temperature,
-               "KEY_HIGH_LOW": high_low_temp,
-               "KEY_CONDITION": conditionCode,
-           };
+            // Wind
+            var winds = json.currentobservation.Winds;
+            var windd_raw = json.currentobservation.Windd;
+            var windd = "";
+            if (windd_raw === 0)
+            {
+                windd = "";
+            }
+            else if (windd_raw >= 337.6 && windd_raw <= 22.5)
+            {
+                windd = "N";
+            }
+            else if (windd_raw >= 22.5 && windd_raw <= 67.5)
+            {
+                windd = "NE";
+            }
+            else if (windd_raw >= 67.5 && windd_raw <= 112.5)
+            {
+                windd = "E";
+            }
+            else if (windd_raw >= 112.5 && windd_raw <= 157.5)
+            {
+                windd = "SE";
+            }
+            else if (windd_raw >= 157.5 && windd_raw <= 202.5)
+            {
+                windd = "S";
+            }
+            else if (windd_raw >= 202.5 && windd_raw <= 247.5)
+            {
+                windd = "SW";
+            }
+            else if (windd_raw >= 247.5 && windd_raw <= 292.5)
+            {
+                windd = "W";
+            }
+            else if (windd_raw >= 247.5 && windd_raw <= 337.5)
+            {
+                windd = "NW";
+            }
+
+            var dictionary = {
+                "KEY_TEMPERATURE": temperature,
+                "KEY_HIGH_LOW": high_low_temp,
+                "KEY_CONDITION": conditionCode,
+                "KEY_WINDS": winds,
+                "KEY_WINDD": windd
+            };
            
             Pebble.sendAppMessage(dictionary,
                 function (e) {

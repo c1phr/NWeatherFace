@@ -2,6 +2,8 @@
 #define KEY_TEMPERATURE 0
 #define KEY_HIGH_LOW 1
 #define KEY_CONDITION 2
+#define KEY_WINDS 3
+#define KEY_WINDD 4
 static Window *s_main_window;
 
 static GFont s_time_font;
@@ -10,11 +12,15 @@ static GFont s_text_font;
 static TextLayer *s_time_layer;
 static TextLayer *s_date_layer;
 static TextLayer *s_weather_layer;
+static TextLayer *s_wind_layer;
 
 static char temperature_buffer[8];
 static char high_low_buffer[32];
 static char weather_layer_buffer[32];
 static char condition_buffer[32];
+static char winds_buffer[4];
+static char windd_buffer[4];
+static char wind_layer_buffer[8];
 
 static void update_time()
 {
@@ -57,12 +63,14 @@ static void set_text_colors(int color)
         text_layer_set_text_color(s_date_layer, GColorWhite);
         text_layer_set_text_color(s_time_layer, GColorWhite);
         text_layer_set_text_color(s_weather_layer, GColorWhite);
+        text_layer_set_text_color(s_wind_layer, GColorWhite);
     }
     else
     {
         text_layer_set_text_color(s_date_layer, GColorBlack);
         text_layer_set_text_color(s_time_layer, GColorBlack);
         text_layer_set_text_color(s_weather_layer, GColorBlack);
+        text_layer_set_text_color(s_wind_layer, GColorBlack);
     }
 }
 
@@ -92,7 +100,7 @@ static void set_condition_color(char* condition)
         else if (strcmp(condition, "rain") == 0)
         {
             window_set_background_color(s_main_window, GColorBlue);
-            set_text_colors(0);
+            set_text_colors(1);
         }
         else if (strcmp(condition, "thunderstorm") == 0)
         {
@@ -147,6 +155,14 @@ static void main_window_load(Window *window) {
     text_layer_set_text(s_weather_layer, "");
     text_layer_set_font(s_weather_layer, s_text_font);
     
+    // Create wind TextLayer
+    s_wind_layer = text_layer_create(GRect(0, 25, 144, 40));
+    text_layer_set_background_color(s_wind_layer, GColorClear);
+    text_layer_set_text_color(s_wind_layer, GColorWhite);
+    text_layer_set_text_alignment(s_wind_layer, GTextAlignmentCenter);
+    text_layer_set_text(s_wind_layer, "");
+    text_layer_set_font(s_wind_layer, s_text_font);
+    
     #ifdef PBL_COLOR
         window_set_background_color(s_main_window, GColorDarkCandyAppleRed);
     #else
@@ -157,6 +173,7 @@ static void main_window_load(Window *window) {
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_date_layer));
     layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_weather_layer));
+    layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_wind_layer));
 }
 
 static void main_window_unload(Window *window) {
@@ -197,6 +214,14 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
                 snprintf(condition_buffer, sizeof(condition_buffer), "%s", t->value->cstring);
                 set_condition_color(condition_buffer);
                 break;
+            
+            case KEY_WINDS:
+                snprintf(winds_buffer, sizeof(winds_buffer), "%s", t->value->cstring);
+                break;
+            
+            case KEY_WINDD:
+                snprintf(windd_buffer, sizeof(windd_buffer), "%s", t->value->cstring);
+                break;
                 
             default:
                 APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
@@ -205,7 +230,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
         
         t = dict_read_next(iterator);
     }
-    
+    snprintf(wind_layer_buffer, sizeof(wind_layer_buffer), "%s %s", winds_buffer, windd_buffer);
+    text_layer_set_text(s_wind_layer, wind_layer_buffer);
     snprintf(weather_layer_buffer, sizeof(weather_layer_buffer), "%s | %s", temperature_buffer, high_low_buffer);
     text_layer_set_text(s_weather_layer, weather_layer_buffer);
 }

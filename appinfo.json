@@ -2,7 +2,9 @@
     "appKeys": {
         "KEY_CONDITION": 2,
         "KEY_HIGH_LOW": 1,
-        "KEY_TEMPERATURE": 0
+        "KEY_TEMPERATURE": 0,
+        "KEY_WINDD": 4,
+        "KEY_WINDS": 3
     },
     "capabilities": [
         "location"
