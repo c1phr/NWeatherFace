@@ -28,7 +28,7 @@ function locationSuccess(pos) {
             else if (conditions.indexOf("Clear") > -1) {
                 conditionCode = "clear";
             }
-            else if ((conditions.indexOf("Rain\/Snow") > -1) || (conditions.indexOf("Wintry") > -1) || (conditions.indexOf("Sleet") > -1)) { //Is WintryMix possible?
+            else if ((conditions.indexOf("Rain\/Snow") > -1) || (conditions.indexOf("Wintry") > -1) || (conditions.indexOf("Sleet") > -1) || (conditions.indexOf("Showers"))) { //Is WintryMix possible?
                 conditionCode = "mix";
             }
             else if (conditions.indexOf("Cloudy") > -1) {
