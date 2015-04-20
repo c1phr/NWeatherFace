@@ -65,11 +65,11 @@ function locationSuccess(pos) {
             var winds = json.currentobservation.Winds;
             var windd_raw = json.currentobservation.Windd;
             var windd = "";
-            if (windd_raw === 0)
+            if (windd_raw === 0 && winds === 0)
             {
                 windd = "";
             }
-            else if (windd_raw >= 337.6 && windd_raw <= 22.5)
+            else if (windd_raw >= -22.5 && windd_raw <= 22.5)
             {
                 windd = "N";
             }
@@ -85,19 +85,19 @@ function locationSuccess(pos) {
             {
                 windd = "SE";
             }
-            else if (windd_raw >= 157.5 && windd_raw <= 202.5)
+            else if (windd_raw >= 157.5 && windd_raw <= -157.5)
             {
                 windd = "S";
             }
-            else if (windd_raw >= 202.5 && windd_raw <= 247.5)
+            else if (windd_raw >= -157.5 && windd_raw <= -112.5)
             {
                 windd = "SW";
             }
-            else if (windd_raw >= 247.5 && windd_raw <= 292.5)
+            else if (windd_raw >= -112.5 && windd_raw <= -67.5)
             {
                 windd = "W";
             }
-            else if (windd_raw >= 247.5 && windd_raw <= 337.5)
+            else if (windd_raw >= -67.5 && windd_raw <= -22.5)
             {
                 windd = "NW";
             }
