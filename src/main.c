@@ -156,7 +156,7 @@ static void main_window_load(Window *window) {
     text_layer_set_font(s_weather_layer, s_text_font);
     
     // Create wind TextLayer
-    s_wind_layer = text_layer_create(GRect(0, 25, 144, 40));
+    s_wind_layer = text_layer_create(GRect(0, 30, 144, 40));
     text_layer_set_background_color(s_wind_layer, GColorClear);
     text_layer_set_text_color(s_wind_layer, GColorWhite);
     text_layer_set_text_alignment(s_wind_layer, GTextAlignmentCenter);
